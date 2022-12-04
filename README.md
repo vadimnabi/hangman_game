@@ -1,1 +1,1 @@
-# simple.games
+# hangman_game

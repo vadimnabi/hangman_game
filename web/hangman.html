@@ -1,0 +1,22 @@
+<!--hangman.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+<div class="bg-dark text-secondary px-4 py-5 text-center">
+    <div class="py-5">
+      <h1 class="display-5 fw-bold text-white">Hangman</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="fs-5 mb-4">
+        This is version of the classic letter guessing game called Hangman. 
+        You are shown a set of blank letters that match a word or phrase and you have to guess what these letters are to reveal the hidden word. 
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Start game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
