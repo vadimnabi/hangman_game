@@ -3,7 +3,6 @@ package hangman
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"os"
 	"strings"
@@ -22,44 +21,38 @@ var dictionary = []string{
 	"Programming",
 }
 
-// Extra Challenge:
-//  * If a letter has already been used, print "You've already used that letter"
-//  * implement the command 'hint' - show to the user a random unguessed letter
-//    * limit the user to one hint only
-//  * Build the game & distribute it to your friend
-//    * Build a binary for another distro as well - e.g. Windows/Mac
-func main() {
+func Start() (string, map[rune]bool) {
 	rand.Seed(time.Now().UnixNano())
 
 	targetWord := getRandomWord()
 	guessedLetters := initializeGuessedWords(targetWord)
-	hangmanState := 0
 
-	for !isGameOver(targetWord, guessedLetters, hangmanState) {
-		printGameState(targetWord, guessedLetters, hangmanState)
-		input := readInput()
-		if len(input) != 1 {
-			fmt.Println("Invalid input. Please use letters only...")
-			continue
-		}
+	return targetWord, guessedLetters
+	// for !isGameOver(targetWord, guessedLetters, hangmanState) {
+	// 	printGameState(targetWord, guessedLetters, hangmanState)
+	// 	input := readInput()
+	// 	if len(input) != 1 {
+	// 		fmt.Println("Invalid input. Please use letters only...")
+	// 		continue
+	// 	}
 
-		letter := rune(input[0])
-		if isCorrectGuess(targetWord, letter) {
-			guessedLetters[letter] = true
-		} else {
-			hangmanState++
-		}
-	}
+	// 	letter := rune(input[0])
+	// 	if isCorrectGuess(targetWord, letter) {
+	// 		guessedLetters[letter] = true
+	// 	} else {
+	// 		hangmanState++
+	// 	}
+	// }
 
-	printGameState(targetWord, guessedLetters, hangmanState)
-	fmt.Print("Game Over... ")
-	if isWordGuessed(targetWord, guessedLetters) {
-		fmt.Println("You win!")
-	} else if isHangmanComplete(hangmanState) {
-		fmt.Println("You lose!")
-	} else {
-		panic("invalid state. Game is over and there is no winner!")
-	}
+	// printGameState(targetWord, guessedLetters, hangmanState)
+	// fmt.Print("Game Over... ")
+	// if isWordGuessed(targetWord, guessedLetters) {
+	// 	fmt.Println("You win!")
+	// } else if isHangmanComplete(hangmanState) {
+	// 	fmt.Println("You lose!")
+	// } else {
+	// 	panic("invalid state. Game is over and there is no winner!")
+	// }
 }
 
 func getRandomWord() string {
@@ -98,15 +91,15 @@ func isHangmanComplete(hangmanState int) bool {
 	return hangmanState >= 9
 }
 
-func printGameState(
-	targetWord string,
-	guessedLetters map[rune]bool,
-	hangmanState int,
-) {
-	fmt.Println(getWordGuessingProgress(targetWord, guessedLetters))
-	fmt.Println()
-	fmt.Println(getHangmanDrawing(hangmanState))
-}
+// func printGameState(
+// 	targetWord string,
+// 	guessedLetters map[rune]bool,
+// 	hangmanState int,
+// ) {
+// 	fmt.Println(getWordGuessingProgress(targetWord, guessedLetters))
+// 	fmt.Println()
+// 	fmt.Println(getHangmanDrawing(hangmanState))
+// }
 
 func getWordGuessingProgress(
 	targetWord string,
@@ -126,26 +119,6 @@ func getWordGuessingProgress(
 	}
 
 	return result
-}
-
-func getHangmanDrawing(hangmanState int) string {
-	data, err := ioutil.ReadFile(
-		fmt.Sprintf("states/hangman%d", hangmanState))
-	if err != nil {
-		panic(err)
-	}
-
-	return string(data)
-}
-
-func readInput() string {
-	fmt.Print("> ")
-	input, err := inputReader.ReadString('\n')
-	if err != nil {
-		panic(err)
-	}
-
-	return strings.TrimSpace(input)
 }
 
 func isCorrectGuess(targetWord string, letter rune) bool {
